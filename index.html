@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to refresh the div content
+        function refreshDiv() {
+            $.ajax({
+                url: "/refresh_div",  // URL for the Flask route that will return the updated div content
+                type: "GET",
+                success: function(data) {
+                    // Update the div content with the received data
+                    // $('#my-div').html('Name: ' + data.name + '<br>Age: ' + data.age + '<br>City: ' + data.city);
+                    
+                    $('#my-div').html('VandI: ' + data.VandI + '<br/>pow_act: ' + data.pow_act + '<br/>unit consumed: ' + data.unit_consumed);
+                    // 'VandI' : f"{Vrms} {Irms}" ,
+                    // 'pow_act': act_pow,
+                    // 'unit_consumed': E
+                }
+            });
+        }
+        setInterval(refreshDiv, 500);
 
+        function tripRelay() {
+            $.ajax({
+                url: '/trip_relay',
+                method: 'GET',
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            refreshDiv();
+
+            $('#tripBtn').click(function() {
+                tripRelay();
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div id="my-div">
+    </div>
+    <button id="tripBtn">Trip Relay</button>
+</body>
+</html>
